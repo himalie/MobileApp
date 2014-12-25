@@ -1,0 +1,59 @@
+<ion-view title="Register">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header">
+    <form ng-submit="doRegister()">
+      <div class="list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Username</span>
+          <input type="text" ng-model="registerData.username" placeholder="Ex: tom_123">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Password</span>
+          <input type="password" ng-model="registerData.password" placeholder="">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Confirm Password</span>
+          <input type="password"  placeholder="">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">First Name</span>
+          <input type="text" ng-model="registerData.firstName" placeholder="Ex: Tom">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Last Name</span>
+          <input type="text" ng-model="registerData.lastName" placeholder="Ex: Mattew">
+        </label>
+        <label class="item item-input item-select">
+            <div class="input-label">
+              Gender
+            </div>
+            <select ng-model="registerData.gender">
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </label>
+
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">E mail</span>
+          <input type="email" ng-model="registerData.email" placeholder="Ex: tom@gmail.com">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">My Location</span>
+          <input type="text" ng-model="registerData.location">
+          <!-- get the location here using a map    need to adjust placement .. otherwise the map wont show        -->
+          <!-- placement is a mess -->
+          <!-- should modify so that user can select the location from map or give a place name and select from a list -->
+          <!-- <span>
+          <div id="map" data-tap-disabled="true" style= "height:800px;width:1000px"></div>
+          </span> -->
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Register</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
