@@ -5,7 +5,7 @@
   "AppIdentifier": "com.telerik.rideshare",
   "DisplayName": "rideshare",
   "Author": "",
-  "Description": "",
+  "Description": "rideshare",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
