@@ -1,8 +1,9 @@
 angular.module('starter')
 
-.factory('RideFactory', ['$http', '$rootScope', '$q', 'UserFactory', function($http, $rootScope, $q, UserFactory) {
+.factory('RideFactory', ['$http', '$rootScope', '$q', 'UserFactory', 'RIDESHARE_URL', function($http, $rootScope, $q, UserFactory, RIDESHARE_URL) {
 
-	var urlBase = 'http://localhost/api/ride';
+  //var urlBase = 'http://192.168.43.70/api/ride'
+	var urlBase = RIDESHARE_URL + 'api/ride';//'http://localhost/api/ride';
   var waypoint_url = 'http://localhost/api/ridecordinates/';
   var rider_url = 'http://localhost/api/riderinfo/';
   //var urlBase = 'http://localhost/ARideShare/api/ride';
@@ -75,7 +76,13 @@ angular.module('starter')
     Ride.getRidesByUser = function(){
      // var deferred = $q.defer();
      console.log(UserFactory.currentUser.user_id);
+     if (UserFactory.currentUser.user_id !== undefined){
       return $http.get(urlBase, {params: {user_id : UserFactory.currentUser.user_id}});
+     }
+     else {
+      return false;
+     }
+      
       
       //   $http.get(urlBase, {params: {user_id : UserFactory.currentUser.user_id}})
       //   .success(function(data, status, headers, config) {
@@ -123,9 +130,9 @@ angular.module('starter')
                 Ride.allRides = data;
               }).
               error(function (data, status, headers, config) {
-                 Ride.allRides = null;
-                $scope.error = error;
-                console.log('error: ' + data);
+                Ride.allRides = null;
+                $scope.error = data.data;
+                console.log('error: ' + $scope.error);
       });
     };
 
@@ -139,7 +146,8 @@ angular.module('starter')
         ride.end_longitude = route.endLongitude;
       }
       console.log('COME HERE FOR EDITING ONCEEEEE')
-      return $http.put(urlBase+'/' + ride.ride_id_, ride);
+      console.log(ride.ride_id)
+      return $http.put(urlBase+'/' + ride.ride_id, ride);
     };
 
     Ride.editRideWayoints = function(waypoint, ride_id_){

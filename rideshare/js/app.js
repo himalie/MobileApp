@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers'])
 
-.constant('RIDESHARE_URL', 'http://localhost/')
+.constant('RIDESHARE_URL', 'http://192.168.43.70/')
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -161,7 +161,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/findride');
+  $urlRouterProvider.otherwise('app/managerides');
 });
 
 

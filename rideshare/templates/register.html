@@ -4,19 +4,19 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
-    <form ng-submit="doRegister()">
+    <form ng-submit="doRegister()" class="custom-form">
       <div class="list">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Username</span>
-          <input type="text" ng-model="registerData.username" placeholder="Ex: tom_123">
+          <input type="text" ng-model="registerData.username" placeholder="Ex: tom_123" required>
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Password</span>
-          <input type="password" ng-model="registerData.password" placeholder="">
+          <input type="password" ng-model="registerData.password" placeholder="" required>
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Confirm Password</span>
-          <input type="password"  placeholder="">
+          <input type="password"  placeholder="" required>
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">First Name</span>
@@ -26,10 +26,8 @@
           <span class="input-label">Last Name</span>
           <input type="text" ng-model="registerData.lastName" placeholder="Ex: Mattew">
         </label>
-        <label class="item item-input item-select">
-            <div class="input-label">
-              Gender
-            </div>
+        <label class="item item-input item-select item-stacked-label">
+            <span class="input-label">Gender</span>
             <select ng-model="registerData.gender">
               <option>Male</option>
               <option>Female</option>
@@ -41,6 +39,10 @@
           <input type="email" ng-model="registerData.email" placeholder="Ex: tom@gmail.com">
         </label>
         <label class="item item-input item-stacked-label">
+          <span class="input-label">Mobile No</span>
+          <input type="text" ng-model="registerData.telephone" placeholder="Ex: 07xxxxxxxx" required>
+        </label>
+        <label class="item item-input item-stacked-label">
           <span class="input-label">My Location</span>
           <input type="text" ng-model="registerData.location">
           <!-- get the location here using a map    need to adjust placement .. otherwise the map wont show        -->
@@ -50,7 +52,7 @@
           <div id="map" data-tap-disabled="true" style= "height:800px;width:1000px"></div>
           </span> -->
         </label>
-        <label class="item">
+        <label class="item item-stacked-label">
           <button class="button button-block button-positive" type="submit">Register</button>
         </label>
       </div>
