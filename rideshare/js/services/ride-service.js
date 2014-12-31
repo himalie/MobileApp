@@ -3,9 +3,11 @@ angular.module('starter')
 .factory('RideFactory', ['$http', '$rootScope', '$q', 'UserFactory', 'RIDESHARE_URL', function($http, $rootScope, $q, UserFactory, RIDESHARE_URL) {
 
   //var urlBase = 'http://192.168.43.70/api/ride'
-	var urlBase = RIDESHARE_URL + 'api/ride';//'http://localhost/api/ride';
-  var waypoint_url = 'http://localhost/api/ridecordinates/';
-  var rider_url = 'http://localhost/api/riderinfo/';
+	var urlBase = RIDESHARE_URL + 'api/ride';
+  //var urlBase ='http://localhost/api/ride';
+
+  var waypoint_url = RIDESHARE_URL+'api/ridecordinates/';
+  var rider_url = RIDESHARE_URL+'api/riderinfo/';
   //var urlBase = 'http://localhost/ARideShare/api/ride';
     var Ride = {};
     Ride.currentRide = {};
@@ -22,8 +24,8 @@ angular.module('starter')
                 user_id : UserFactory.currentUser.user_id,
                 from_location: routeData.startAddress,
                 to_location : routeData.endAddress,
-                ride_type :'car',
-                available_seats: rideData.availableSeats,
+                ride_type :rideData.ride_type,
+                available_seats: rideData.available_seats,
                 start_date: rideData.date,
                 start_time: rideData.startTime,
                 //estimated_end_time: ,
@@ -75,8 +77,8 @@ angular.module('starter')
 
     Ride.getRidesByUser = function(){
      // var deferred = $q.defer();
-     console.log(UserFactory.currentUser.user_id);
-     if (UserFactory.currentUser.user_id !== undefined){
+    // console.log(UserFactory.currentUser.user_id);
+     if (UserFactory.currentUser !== null){
       return $http.get(urlBase, {params: {user_id : UserFactory.currentUser.user_id}});
      }
      else {
@@ -103,7 +105,12 @@ angular.module('starter')
     // fetch the rides that the logged in user has joined
     Ride.getJoinedRidesByUser = function(){
       console.log('sssssssssssssssssssrrrrrrrrrrrrrrrssssssssssssssss')
-      return $http.get(rider_url, {params: {user_id : UserFactory.currentUser.user_id}});
+      if (UserFactory.currentUser !== null){
+        return $http.get(rider_url, {params: {user_id : UserFactory.currentUser.user_id}});
+      } 
+      else {
+        return false;
+      }
 
     };
 
@@ -118,7 +125,7 @@ angular.module('starter')
               }).
               error(function (data, status, headers, config) {
                 Ride.currentRide = null;
-                $scope.error = error;
+                //$scope.error = error;
                 console.log('error: ' + data);
       });
     };
@@ -131,8 +138,8 @@ angular.module('starter')
               }).
               error(function (data, status, headers, config) {
                 Ride.allRides = null;
-                $scope.error = data.data;
-                console.log('error: ' + $scope.error);
+                //$scope.error = data.data;
+                console.log('error: ' + data);
       });
     };
 

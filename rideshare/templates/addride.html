@@ -5,7 +5,7 @@
         </ion-nav-buttons>
 
         <ion-nav-buttons side="right">
-            <button class="button button-icon icon ion-checkmark-round" type="submit"></button>
+            <button class="button button-icon icon ion-checkmark-round" type="submit" ng-click="addRide()"></button>
         </ion-nav-buttons>
 
         <ion-content class="has-header">
@@ -16,24 +16,28 @@
                 <!--</label>-->
 
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">From</span>
-                    <input type="text" placeholder="Ex: Kandy, Sri Lanka" ng-model="rideData.fromLocation">
+                    <span class="input-label title-label">From</span>
+                    <input type="text" placeholder="Ex: Kandy, Sri Lanka" ng-model="rideData.fromLocation" >
                 </label>
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">To</span>
+                    <span class="input-label title-label">To</span>
                     <input type="text" ng-model="rideData.toLocation" placeholder="Ex: Colombo, Sri Lanka">
                 </label>
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">Date</span>
+                    <span class="input-label title-label">Date</span>
                     <input type="date" ng-model="rideData.date" placeholder="01/01/2015">
                 </label>
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">Time</span>
+                    <span class="input-label title-label">Time</span>
                     <input type="time" placeholder="" ng-model="rideData.startTime">
                 </label>
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">Available Seats</span>
-                    <input type="number" ng-model="rideData.availableSeats" placeholder="Ex: 2">
+                    <span class="input-label title-label">Ride Type</span>
+                    <input type="text" placeholder="OneTime" ng-model="rideData.ride_type">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label title-label">Available Seats</span>
+                    <input type="number" ng-model="rideData.available_seats" placeholder="Ex: 2">
                 </label>
                 <label class="checkbox">Females only
                     <input type="checkbox" ng-model="rideData.femalesOnly">
@@ -42,7 +46,7 @@
                     <input type="checkbox" ng-model="rideData.nonSmokers">
                 </label>
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">Comments</span>
+                    <span class="input-label title-label">Comments</span>
                     <input type="text" placeholder="Ex: Non-smoker" ng-model="rideData.comments">
                 </label>
 

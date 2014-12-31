@@ -1,6 +1,6 @@
 angular.module('starter')
 
-.controller('UserCtrl', function($scope, $state, $http, $ionicModal, $timeout, UserFactory, $rootScope, $stateParams, $location, $ionicPopup) {
+.controller('UserCtrl', function($scope, $state, $http, $ionicModal, $timeout, UserFactory, $rootScope, $stateParams, $location, $ionicPopup, VehicleFactory) {
 
     // Form data for the login modal
     $scope.loginData = {};
@@ -64,16 +64,17 @@ angular.module('starter')
               })
               .then(function(result) {
                 if(result) {
-                    $scope.loginData = null;
+                    //$scope.loginData = null;
                     $scope.currentUser = null;
                     $scope.userDetails = null;
                     UserFactory.currentUser = null;
                    // $scope.userDetails.user_id = undefined;
                     console.log($scope.userDetails)
                     console.log('ooooooooooooooooooooooooooooooooooo')
+                    $scope.modal.show();
                     //console.log( $scope.userDetails.user_id)
-                    var path = '/app/findride/' ;
-                    $location.path(path);
+                    //var path = '/app/findride/' ;
+                    //$location.path(path);
                   }
                 });
   
@@ -124,6 +125,98 @@ angular.module('starter')
         $scope.modal.show();
       }
     };
+
+    // ************ vehicle modal ****************
+    // Form data for vehicle
+    $scope.vehicleData = {};
+    $scope.vehicles = {};
+
+    // Create the vehicle modal that we will use later
+    $ionicModal.fromTemplateUrl('templates/vehicle.html', {
+      scope: $scope,
+      //animation: 'slide-in-up',
+      focusFirstInput: true
+    }).then(function(modal) {
+      $scope.vehicleModal = modal;
+    });
+    //Be sure to cleanup the modal by removing it from the DOM
+    $scope.$on('$destroy', function() {
+      $scope.vehicleModal.remove();
+    });
+
+    // Triggered in the vehicle modal to close it
+    $scope.closeVehicle = function() {
+      $scope.vehicleModal.hide();
+    };
+
+    // Open the vehicle modal
+    $scope.vehicle = function() {
+      $scope.vehicleModal.show();
+    };
+
+    // ------------- view vehicles----------------------
+    $ionicModal.fromTemplateUrl('templates/viewvehicles.html', {
+      scope: $scope,
+      //animation: 'slide-in-up',
+      focusFirstInput: true
+    }).then(function(modal) {
+      $scope.vehiclesModal = modal;
+    });
+    //Be sure to cleanup the modal by removing it from the DOM
+    $scope.$on('$destroy', function() {
+      $scope.vehiclesModal.remove();
+    });
+
+    // Triggered in the vehicle modal to close it
+    $scope.closeVehicles = function() {
+      $scope.vehiclesModal.hide();
+    };
+    //-- ------------------------------------
+    // Perform the vehicle action when the user submits the vehicle form
+    $scope.addVehicle = function() {
+      console.log($scope.vehicleData)
+      var promise = VehicleFactory.addVehicle($scope.vehicleData);
+      promise.then(function(data) {
+            console.log('coming heeeeeeeeeeeeeeeee')
+            console.log(data.data)
+            //$scope.vehicles.push(data.data);
+            $scope.vehicleModal.hide();    
+            //var path = '/app/managerides/' ;
+
+            //$location.path(path);   
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaa')
+            //$scope.error_message =''; 
+      });
+    };
+
+    $scope.vehicleDetails = [];
+    $scope.viewVehicles = function(){
+      var promise = VehicleFactory.viewVehicles();
+      promise.then(function(data){
+
+          for(var i= 0; i<data.data.length ; i++){
+
+            var id_ = data.data[i].vehicle_id;
+            $scope.vehicleDetails[i] = {id : data.data[i].vehicle_id,
+                                        vehicle_no : data.data[i].vehicle_no,
+                                        type : data.data[i].type,
+                                        available_seats : data.data[i].available_seats};
+
+            console.log($scope.vehicleDetails[i])
+          }
+
+          console.log($scope.vehicleDetails)
+          $scope.vehiclesModal.show();
+        });
+    };
+
+    $scope.removeVehicle = function(vehicle_id){
+      var promise = VehicleFactory.removeVehicle(vehicle_id);
+      promise.then(function(){
+        console.log('deleted vehicle - delete vehicle record form vehicleDetails as well')
+      });
+    }
+    // **************************
 
 })
 
@@ -226,21 +319,21 @@ angular.module('starter')
 
 
 
-.controller('SettingsCtrl', function($scope, UserFactory) {
-  console.log('settings '+ UserFactory.currentUser.user_name);
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
+// .controller('SettingsCtrl', function($scope, UserFactory) {
+//   console.log('settings '+ UserFactory.currentUser.user_name);
+//   $scope.playlists = [
+//     { title: 'Reggae', id: 1 },
+//     { title: 'Chill', id: 2 },
+//     { title: 'Dubstep', id: 3 },
+//     { title: 'Indie', id: 4 },
+//     { title: 'Rap', id: 5 },
+//     { title: 'Cowbell', id: 6 }
+//   ];
+// })
 
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-})
+// .controller('PlaylistCtrl', function($scope, $stateParams) {
+// })
 
 
 
@@ -262,7 +355,11 @@ angular.module('starter')
   if(RideFactory.currentRide !== undefined) {
     $scope.currentRideId = RideFactory.currentRide.ride_id;
   }
-  $scope.currentUserr = UserFactory.currentUser.user_id;
+  console.log(UserFactory.currentUser)
+  console.log(typeof UserFactory.currentUser)
+  if(UserFactory.currentUser !== null){
+    $scope.currentUserr = UserFactory.currentUser.user_id;
+  }
   $scope.allRider = {};
   $scope.userRides = {};
   $scope.joinedRides = {};
@@ -290,7 +387,6 @@ angular.module('starter')
 
     // Triggered in the login modal to close it
     $scope.closeLogin = function() {
-      console.log(" ddd "+ UserFactory.currentUser.first_name);
       //$scope.getCurrLocation();
       $scope.loginmodal.hide();
     };
@@ -373,15 +469,19 @@ angular.module('starter')
         promise.then(function(data){
           RideFactory.userRides = data.data;
           console.log(RideFactory.userRides)
+          console.log(data.data)
           console.log(RideFactory.userRides.length)
-          for(var i= 0; i<RideFactory.userRides.length ; i++){
-            $scope.userRides[i] = {id : RideFactory.userRides[i].ride_id,
-                              from : RideFactory.userRides[i].from_location,
-                              to : RideFactory.userRides[i].to_location,
-                              seats : RideFactory.userRides[i].available_seats,
-                              start_date : RideFactory.userRides[i].start_date,
-                              start_time : RideFactory.userRides[i].start_time,
-                              state : RideFactory.userRides[i].status};
+          if (RideFactory.userRides !== "null")  {
+            console.log(typeof RideFactory.userRides)
+            for(var i= 0; i<RideFactory.userRides.length ; i++){
+              $scope.userRides[i] = {id : RideFactory.userRides[i].ride_id,
+                                from : RideFactory.userRides[i].from_location,
+                                to : RideFactory.userRides[i].to_location,
+                                seats : RideFactory.userRides[i].available_seats,
+                                start_date : RideFactory.userRides[i].start_date,
+                                start_time : RideFactory.userRides[i].start_time,
+                                state : RideFactory.userRides[i].status};
+            }
           }
         });
       }
@@ -400,15 +500,17 @@ angular.module('starter')
       if (promise){
         promise.then(function(data){
           RideFactory.passengerRides = data.data;
-           console.log(RideFactory.passengerRides.length)
-          for(var i= 0; i<RideFactory.passengerRides.length ; i++){
-            $scope.joinedRides[i] = {id : RideFactory.passengerRides[i].Ride.ride_id,
-                              from : RideFactory.passengerRides[i].Ride.from_location,
-                              to : RideFactory.passengerRides[i].Ride.to_location,
-                              seats : RideFactory.passengerRides[i].Ride.available_seats,
-                              start_date : RideFactory.passengerRides[i].Ride.start_date,
-                              start_time : RideFactory.passengerRides[i].Ride.start_time,
-                              state : RideFactory.passengerRides[i].Ride.status};
+          console.log(RideFactory.passengerRides)
+          if (RideFactory.passengerRides !== 'null') {
+            for(var i= 0; i<RideFactory.passengerRides.length ; i++){
+              $scope.joinedRides[i] = {id : RideFactory.passengerRides[i].Ride.ride_id,
+                                from : RideFactory.passengerRides[i].Ride.from_location,
+                                to : RideFactory.passengerRides[i].Ride.to_location,
+                                seats : RideFactory.passengerRides[i].Ride.available_seats,
+                                start_date : RideFactory.passengerRides[i].Ride.start_date,
+                                start_time : RideFactory.passengerRides[i].Ride.start_time,
+                                state : RideFactory.passengerRides[i].Ride.status};
+            }
           }
         });
       }

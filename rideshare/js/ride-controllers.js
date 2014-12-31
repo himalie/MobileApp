@@ -3,10 +3,14 @@ angular.module('starter')
 .controller('AddRideCtrl', function($scope, $ionicModal, $ionicLoading, $compile, $rootScope, RideFactory, $location, UserFactory) {
     
     $scope.rideData = {};
-    $scope.currentRideId = RideFactory.currentRide.ride_id;
-    $scope.currentUserr = UserFactory.currentUser.user_id;
-    $scope.addRide = function(){
+    if(RideFactory.currentRide !== undefined) {
+      $scope.currentRideId = RideFactory.currentRide.ride_id;
+    }
 
+    $scope.currentUserr = UserFactory.currentUser.user_id;
+
+    $scope.addRide = function(){
+      console.log($rideData.availableSeats)
       var promise = RideFactory.addRide($scope.rideData, $scope);
       if (promise)
       {
@@ -155,10 +159,10 @@ angular.module('starter')
 
         //console.log(markers[markerId]);
 
-        google.maps.event.addListener(marker, 'dragend', function(){
-          alert(marker.getPosition())
-            //(marker.getPosition());
-        });
+        // google.maps.event.addListener(marker, 'dragend', function(){
+        //   alert(marker.getPosition())
+        //     //(marker.getPosition());
+        // });
 
         markers.push(marker);
 
@@ -298,7 +302,7 @@ angular.module('starter')
 
     };
 
-    var loadPositionMarker = function(){
+    $scope.loadPositionMarker = function(){
         var promise = UserFactory.getCurrentLocatoin();
 
         promise.then(function() {
@@ -572,7 +576,7 @@ angular.module('starter')
           for (key in $scope.rideDetails.RiderInfoes) {  
             var pLatlng = new google.maps.LatLng($scope.rideDetails.RiderInfoes[key].start_latitude,$scope.rideDetails.RiderInfoes[key].start_longitude);
 
-            placePassengerMarker(pLatlng, map, ($scope.rideDetails.RiderInfoes[key].User.first_name+ ' '+ $scope.rideDetails.RiderInfoes[key].User.last_name));
+            placePassengerMarker(pLatlng, map, ($scope.rideDetails.RiderInfoes[key].User.first_name.trim()+ ' '+ $scope.rideDetails.RiderInfoes[key].User.last_name));
 
             console.log('******************22222222*****************************')
           }
@@ -724,7 +728,7 @@ angular.module('starter')
         if (($scope.rideDetails.available_seats - 1)>= 0) {
           $scope.modalPosition.show();
           //setTimeout(loadPositionMarker(), 1000)
-          loadPositionMarker();
+          //loadPositionMarker();
         }
         else {
           $ionicPopup.alert({

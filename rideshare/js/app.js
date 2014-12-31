@@ -6,7 +6,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers'])
 
-.constant('RIDESHARE_URL', 'http://192.168.43.70/')
+//.constant('RIDESHARE_URL', 'http://192.168.43.70/')
+.constant('RIDESHARE_URL', 'http://localhost/')
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
